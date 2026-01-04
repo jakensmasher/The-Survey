@@ -41,6 +41,10 @@ let index = 0;
 const startScreen = document.getElementById("startScreen");
 const surveyScreen = document.getElementById("surveyScreen");
 const questionEl = document.getElementById("question");
+const buttons = document.querySelector(".buttons");
+const jumpscare = document.getElementById("jumpscare");
+const flash = document.getElementById("flash");
+const glitchText = document.getElementById("glitchText");
 
 document.getElementById("startBtn").onclick = () => {
   startScreen.classList.add("hidden");
@@ -57,10 +61,39 @@ function showQuestion() {
 
 function nextQuestion() {
   index++;
+
+  // Jumpscare after 8th question (trigger before Question 9)
+  if (index === 8) {
+    triggerJumpscare();
+    return;
+  }
+
   if (index < questions.length) {
     showQuestion();
   } else {
     questionEl.textContent = "THANK YOU FOR YOUR PARTICIPATION.";
-    document.querySelector(".buttons").style.display = "none";
+    buttons.style.display = "none";
   }
+}
+
+function triggerJumpscare() {
+  // Step 1: White flash
+  flash.style.display = "block";
+
+  setTimeout(() => {
+    flash.style.display = "none";
+
+    // Step 2: Show jumpscare and glitch text + shake
+    jumpscare.style.display = "block";
+    glitchText.style.display = "block";
+    document.body.style.animation = "shake 0.5s";
+
+    // Step 3: Hide jumpscare and glitch text after 0.9s
+    setTimeout(() => {
+      jumpscare.style.display = "none";
+      glitchText.style.display = "none";
+      document.body.style.animation = ""; // remove shake
+      showQuestion();
+    }, 900);
+  }, 150); // flash duration
 }
