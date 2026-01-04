@@ -60,18 +60,18 @@ function showQuestion() {
 }
 
 function nextQuestion() {
-  index++;
-
-  // Jumpscare after 8th question (trigger before Question 9)
-  if (index === 8) {
+  // Trigger jumpscare after Question 8 (index 7)
+  if (index === 7) {
+    index++; // move to Question 9 after jumpscare
     triggerJumpscare();
     return;
   }
 
+  index++;
   if (index < questions.length) {
     showQuestion();
   } else {
-    questionEl.textContent = "THANK YOU FOR YOUR PARTICIPATION.";
+    questionEl.textContent = "I hope to see you again...";
     buttons.style.display = "none";
   }
 }
@@ -83,7 +83,7 @@ function triggerJumpscare() {
   setTimeout(() => {
     flash.style.display = "none";
 
-    // Step 2: Show jumpscare and glitch text + shake
+    // Step 2: Show jumpscare + glitch text + shake
     jumpscare.style.display = "block";
     glitchText.style.display = "block";
     document.body.style.animation = "shake 0.5s";
@@ -93,7 +93,7 @@ function triggerJumpscare() {
       jumpscare.style.display = "none";
       glitchText.style.display = "none";
       document.body.style.animation = ""; // remove shake
-      showQuestion();
+      showQuestion(); // continue survey with Question 9
     }, 900);
   }, 150); // flash duration
 }
